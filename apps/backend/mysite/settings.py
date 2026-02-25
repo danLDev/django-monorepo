@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,12 +89,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        "OPTIONS": {
-            "service": "my_service",
-            "passfile": ".my_pgpass",
-        },
+    "default": {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "HOST": "localhost",
+        "PORT": "5432",
+        "NAME": os.environ.get("PGDATABASE", "postgres"),
+        "USER": os.environ.get("PGUSER", "postgres"),
+        "PASSWORD": os.environ.get("PGPASSWORD", "postgres"),
     }
 }
 
@@ -117,6 +120,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 GDAL_LIBRARY_PATH = '/opt/homebrew/Cellar/gdal/3.11.3_3/lib/libgdal.dylib'
 GEOS_LIBRARY_PATH = '/opt/homebrew/Cellar/geos/3.14.0/lib/libgeos_c.dylib'
+if sys.platform != 'darwin':
+    GDAL_LIBRARY_PATH = None
+    GEOS_LIBRARY_PATH = None
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

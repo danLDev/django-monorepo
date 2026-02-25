@@ -1,0 +1,5 @@
+Django>=5.2
+psycopg[binary]  # Postgres adapter for PostGIS backend
+djangorestframework
+django-cors-headers
+django-filter
